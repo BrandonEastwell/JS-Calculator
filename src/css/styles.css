@@ -9,9 +9,13 @@
 }
 
 #screen-container {
+    display: flex;
+    justify-content: center;
     border-radius: 2px;
     height: 100px;
     background-color: gray;
+    font-size: 32px;
+    font-family: Arial, serif;
 }
 
 #input-container {
@@ -29,7 +33,11 @@ button {
     flex-basis: 100px;
     flex-grow: 1;
     flex-shrink: 1;
-    background-color: gray;
+    background-color: #494949;
     text-decoration-color: white;
     border-color: transparent;
+}
+
+button:hover {
+    background-color: #3E3E3EFF;
 }
