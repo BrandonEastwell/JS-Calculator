@@ -1,0 +1,35 @@
+#calculator-container {
+    width: 500px;
+    height: 750px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+
+#screen-container {
+    border-radius: 2px;
+    height: 100px;
+    background-color: gray;
+}
+
+#input-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+}
+
+button {
+    font-size: 28px;
+    border-radius: 2px;
+    height: 75px;
+    flex-basis: 100px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    background-color: gray;
+    text-decoration-color: white;
+    border-color: transparent;
+}
