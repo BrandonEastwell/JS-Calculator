@@ -1,38 +1,62 @@
 //GLOBAL VAR
-let firstNum;
-let secondNum;
-let operator;
+let lastInput = "";
+let lastResult = false;
 
 //HTML DOM Elements
-const calcScreen = document.querySelector("#screen-text");
+const calcExpression = document.querySelector("#screen-text");
 let calcBtns = document.querySelector('#input-container');
 
 calcBtns.addEventListener('click', (event) => {
-    let target = event.target;
-    if (target.className.includes("btn")) {
-        calcScreen.textContent += target.textContent; //updates calculator screen
-        updateCalc();
+    let button = event.target;
+    if (button.className.includes("btn")) {
+        if (button.className === 'btn-operator') {
+            if (button.textContent === 'C') {
+                calcExpression.textContent = '';
+                lastInput = button.textContent;
+            } else if (button.textContent === '=') {
+                calcExpression.textContent = evaluate();
+                lastResult = true;
+            } else if (isEmpty(lastInput)) {
+                calcExpression.textContent += '0' + button.textContent;
+                lastInput = button.textContent;
+            } else if (isNaN(Number(lastInput)) && !lastResult) {
+                calcExpression.textContent = calcExpression.textContent.slice(0, calcExpression.textContent.length-1);
+                calcExpression.textContent += button.textContent;
+                lastInput = button.textContent;
+            } else {
+                calcExpression.textContent += button.textContent;
+                lastInput = button.textContent;
+                lastResult = false;
+            }
+        } else {
+            if (lastResult) {
+                calcExpression.textContent = button.textContent;
+                lastResult = false;
+            } else {
+                calcExpression.textContent += button.textContent; //updates calculator screen
+            }
+            lastInput = button.textContent;
+        }
     }
 });
 
 const isEmpty = value => value === "";
 
-function updateCalc() {
-    //if the first number variable is empty find the first value
-    //ignore operators
-    //once found the first value find the first operator between the values
-    //find the second number if the second number variable is empty
-    //once all variables contain values call operate function and parse all values
-    //if CLEAR input is called empty all values and current text content of screen
-    const arrInput = calcScreen.textContent.split("");
-    arrInput.forEach((value) => {
-        if (isEmpty(firstNum)) {
-
+function evaluate() {
+    let stack = [];
+    const tokens = calcExpression.textContent.split(/([+\-x\/])/);
+    tokens.forEach((token) => {
+        stack.push(token);
+        if (stack.length === 3) {
+            stack.reverse().push(operate(stack.pop(), stack.pop(),stack.pop().toString()));
         }
-    })
+    });
+    return stack.join("");
 }
 
-function operate(firstNum, secondNum, operator) {
+function operate(firstNum, operator, secondNum) {
+    firstNum = Number(firstNum);
+    secondNum = Number(secondNum);
     switch (operator) {
         case '+':
             return add(firstNum, secondNum);
